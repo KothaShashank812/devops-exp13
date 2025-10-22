@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Event Registrations</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Poppins,sans-serif}
+body{background:linear-gradient(135deg,#f0f9ff,#e0f2fe);min-height:100vh;color:#1e293b}
+header{background:#2563eb;color:white;padding:20px;text-align:center;font-size:1.6rem;box-shadow:0 4px 6px rgba(0,0,0,0.1)}
+.container{width:90%;max-width:1100px;margin:30px auto}
+table{width:100%;border-collapse:collapse;margin-top:20px;background:white;border-radius:10px;overflow:hidden;box-shadow:0 4px 8px rgba(0,0,0,0.1)}
+th,td{padding:12px 15px;text-align:center;border-bottom:1px solid #e2e8f0}
+th{background:#2563eb;color:white}
+tr:hover{background:#f1f5f9}
+button{margin-top:20px;padding:10px 15px;border:none;background:#2563eb;color:white;border-radius:8px;cursor:pointer}
+button:hover{background:#1d4ed8}
+.empty{text-align:center;margin-top:40px;font-size:1.2rem;color:#475569}
+a.back{display:inline-block;margin-top:20px;text-decoration:none;color:#1d4ed8}
+a.back:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<header>📋 Registered Participants</header>
+<div class="container">
+  <table id="regTable">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Roll No</th>
+        <th>Email</th>
+        <th>Year</th>
+        <th>Event</th>
+        <th>Registered On</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div class="empty" id="emptyMsg">No registrations found.</div>
+  <button onclick="clearData()">Clear All</button><br>
+  <a href="index.html" class="back">⬅ Back to Home</a>
+</div>
+
+<script>
+const tableBody=document.querySelector("#regTable tbody");
+const emptyMsg=document.getElementById("emptyMsg");
+const data=JSON.parse(localStorage.getItem("registrations")||"[]");
+
+function loadTable(){
+  if(data.length===0){emptyMsg.style.display="block";return;}
+  emptyMsg.style.display="none";
+  data.forEach((r,i)=>{
+    const row=document.createElement("tr");
+    row.innerHTML=`
+      <td>${i+1}</td>
+      <td>${r.name}</td>
+      <td>${r.roll}</td>
+      <td>${r.email}</td>
+      <td>${r.year}</td>
+      <td>${r.event}</td>
+      <td>${r.date}</td>`;
+    tableBody.appendChild(row);
+  });
+}
+function clearData(){
+  if(confirm("Are you sure you want to clear all registrations?")){
+    localStorage.removeItem("registrations");
+    location.reload();
+  }
+}
+loadTable();
+</script>
+</body>
+</html>
